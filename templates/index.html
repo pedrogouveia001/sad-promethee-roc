@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B3 PrometheeInvestor — Análise Multicritério de Investimentos</title>
+  <meta name="description" content="Plataforma de apoio à decisão para investimentos na B3 usando o método multicritério PROMETHEE II com pesos ROC e análise temporal.">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Styling -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <!-- Toast Notifications Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <!-- Mobile hamburger toggle -->
+      <button class="mobile-menu-close" id="mobile-menu-close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <a href="#" class="brand">
+        <div class="brand-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="brand-text">B3<span>Promethee</span><span class="brand-sub">Investor</span></div>
+      </a>
+      
+      <nav class="nav-menu">
+        <div class="nav-item active" data-tab="dashboard" id="tab-btn-dashboard">
+          <i class="fa-solid fa-gauge-high"></i>
+          <span>Dashboard</span>
+        </div>
+        <div class="nav-item" data-tab="alternatives" id="tab-btn-alternatives">
+          <i class="fa-solid fa-building-columns"></i>
+          <span>Empresas</span>
+          <span class="nav-badge" id="nav-badge-companies" style="display:none;">0</span>
+        </div>
+        <div class="nav-item" data-tab="promethee" id="tab-btn-promethee">
+          <i class="fa-solid fa-scale-balanced"></i>
+          <span>Análise PROMETHEE</span>
+        </div>
+        <div class="nav-item" data-tab="analysis" id="tab-btn-analysis">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Séries Temporais</span>
+        </div>
+        <div class="nav-item" data-tab="recommendations" id="tab-btn-recommendations">
+          <i class="fa-solid fa-ranking-star"></i>
+          <span>Recomendações</span>
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="system-status">
+          <div class="status-indicator" id="status-dot"></div>
+          <span id="status-text">Conectando...</span>
+        </div>
+        <div class="sidebar-version">B3 PrometheeInvestor v1.0</div>
+      </div>
+    </aside>
+    
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- HEADER -->
+      <div class="header-container">
+        <div class="title-area">
+          <!-- Mobile hamburger button -->
+          <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div>
+            <h1 id="page-title">Dashboard</h1>
+            <p id="page-subtitle">Visão geral do mercado e desempenho multicritério</p>
+          </div>
+        </div>
+        
+        <div class="header-actions">
+          <button class="btn btn-secondary" id="sync-data-btn">
+            <i class="fa-solid fa-rotate"></i> <span class="btn-text-full">Sincronizar Dados</span><span class="btn-text-short">Sync</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- 1. DASHBOARD TAB -->
+      <div class="tab-content active" id="tab-dashboard">
+        <!-- Market Metrics Cards -->
+        <div class="metrics-grid">
+          <div class="glass-card metric-card">
+            <div class="metric-icon"><i class="fa-solid fa-globe"></i></div>
+            <div class="metric-info">
+              <span class="label">Ibovespa</span>
+              <span class="value" id="market-ibov">—</span>
+            </div>
+          </div>
+          <div class="glass-card metric-card">
+            <div class="metric-icon" style="color:var(--color-success)"><i class="fa-solid fa-dollar-sign"></i></div>
+            <div class="metric-info">
+              <span class="label">Dólar Comercial</span>
+              <span class="value" id="market-usdbrl">—</span>
+            </div>
+          </div>
+          <div class="glass-card metric-card">
+            <div class="metric-icon" style="color:var(--color-warning)"><i class="fa-solid fa-percent"></i></div>
+            <div class="metric-info">
+              <span class="label">Taxa Selic</span>
+              <span class="value">10,50%</span>
+            </div>
+          </div>
+          <div class="glass-card metric-card">
+            <div class="metric-icon" style="color:var(--color-info)"><i class="fa-solid fa-basket-shopping"></i></div>
+            <div class="metric-info">
+              <span class="label">IPCA (12m)</span>
+              <span class="value">3,93%</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Two Column Section -->
+        <div class="grid-2fr-1fr">
+          <!-- Heatmap Card -->
+          <div class="glass-card">
+            <div class="card-header-row">
+              <h2>Mapa de Calor Multicritério</h2>
+              <span class="card-chip"><i class="fa-solid fa-circle-info"></i> Valor Global V(a)</span>
+            </div>
+            <div class="heatmap-grid" id="market-heatmap">
+              <div class="empty-state-inline">
+                <i class="fa-solid fa-fire-flame-curved"></i>
+                <p>Execute o cálculo no módulo <strong>Análise PROMETHEE</strong> para exibir o mapa de calor setorial.</p>
+                <button class="btn btn-secondary btn-sm" onclick="document.querySelector('[data-tab=promethee]').click()">
+                  Ir para Análise PROMETHEE <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Top 5 Rankings Card -->
+          <div class="glass-card">
+            <div class="card-header-row">
+              <h2>Top 5 Ranking</h2>
+              <span class="card-chip"><i class="fa-solid fa-trophy"></i> Melhores V(a)</span>
+            </div>
+            <div class="top-ranking-list" id="top-companies-list">
+              <div class="empty-state-inline compact">
+                <i class="fa-solid fa-chart-column"></i>
+                <p>Nenhum cálculo efetuado.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 2. ALTERNATIVES TAB -->
+      <div class="tab-content" id="tab-alternatives">
+        <div class="glass-card grid-1fr-2fr">
+          <!-- Sector Selector Tree -->
+          <div class="flex-col gap-1-5">
+            <div class="flex-between">
+              <h3 style="font-family: var(--font-display);">Filtro por Setores</h3>
+              <div class="flex-gap-half">
+                <button class="btn btn-secondary btn-sm" id="select-all-sectors">Todos</button>
+                <button class="btn btn-secondary btn-sm" id="clear-sectors">Limpar</button>
+              </div>
+            </div>
+            
+            <div class="sector-tree-container" id="sector-tree">
+              <div class="empty-state-inline compact">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <p>Carregando setores da B3...</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Selected Alternatives Grid -->
+          <div class="flex-col gap-1-5">
+            <div class="alt-header-row">
+              <h3 style="font-family: var(--font-display);">Empresas Selecionadas (<span id="selected-count">0</span>)</h3>
+              <div class="alt-actions">
+                <div class="search-input-wrapper">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" class="form-control" placeholder="Buscar ticker..." id="company-search-input">
+                </div>
+                <button class="btn btn-primary" id="save-alternatives-btn">
+                  <i class="fa-solid fa-floppy-disk"></i> <span class="btn-text-full">Salvar Seleção</span><span class="btn-text-short">Salvar</span>
+                </button>
+              </div>
+            </div>
+            
+            <div id="selected-companies-cards" class="companies-cards-grid">
+              <div class="empty-state-inline">
+                <i class="fa-solid fa-building-columns"></i>
+                <p>Nenhuma empresa selecionada.<br>Selecione empresas na árvore setorial.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 3. PROMETHEE TAB -->
+      <div class="tab-content" id="tab-promethee">
+        <!-- Workflow Steps Indicator -->
+        <div class="workflow-steps">
+          <div class="step completed" id="step-1">
+            <div class="step-number">1</div>
+            <div class="step-label">Empresas</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step active" id="step-2">
+            <div class="step-number">2</div>
+            <div class="step-label">Critérios</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step" id="step-3">
+            <div class="step-number">3</div>
+            <div class="step-label">Calcular</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step" id="step-4">
+            <div class="step-number">4</div>
+            <div class="step-label">Resultados</div>
+          </div>
+        </div>
+
+        <div class="grid-1fr-1fr">
+          <!-- Criteria Elicitation Card -->
+          <div class="glass-card">
+            <div class="card-header-row">
+              <h2>Elicitação de Critérios</h2>
+              <span class="card-chip"><i class="fa-solid fa-hand-pointer"></i> Arraste para ordenar</span>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+              Selecione os indicadores fundamentalistas e ordene-os arrastando por ordem de importância (o topo é o mais importante).
+            </p>
+            
+            <div class="criteria-list-container" id="criteria-drag-list">
+              <div class="empty-state-inline compact">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <p>Carregando critérios...</p>
+              </div>
+            </div>
+            
+            <div class="smarter-actions">
+              <button class="btn btn-secondary" id="reset-criteria-btn">
+                <i class="fa-solid fa-arrow-rotate-left"></i> <span class="btn-text-full">Restaurar Padrão</span><span class="btn-text-short">Reset</span>
+              </button>
+              <button class="btn btn-primary btn-glow" id="calculate-promethee-btn">
+                <i class="fa-solid fa-calculator"></i> <span class="btn-text-full">Calcular Valores Globais</span><span class="btn-text-short">Calcular</span>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Weights Visualizer & Matrix -->
+          <div class="flex-col gap-2">
+            <!-- ROC Weights Graph Card -->
+            <div class="glass-card">
+              <div class="card-header-row">
+                <h2>Distribuição dos Pesos (ROC)</h2>
+              </div>
+              <div class="chart-container">
+                <canvas id="weights-chart"></canvas>
+              </div>
+            </div>
+            
+            <!-- Performance Matrix Info -->
+            <div class="glass-card">
+              <div class="card-header-row">
+                <h2>Matriz de Decisão</h2>
+                <span class="card-chip"><i class="fa-solid fa-table-cells"></i> Normalizados [0,1]</span>
+              </div>
+              <div class="table-scroll-wrapper">
+                <table class="data-table" id="decision-matrix-table">
+                  <thead>
+                    <!-- Dynamic Headers -->
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="color: var(--text-secondary); padding: 1.5rem; text-align: center;">Aguardando cálculo...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 4. ANALYSIS TAB -->
+      <div class="tab-content" id="tab-analysis">
+        <div class="glass-card analysis-controls">
+          <div>
+            <h2 style="font-family: var(--font-display);">Análise de Séries Temporais</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Compare o Valor Global com o Preço da Ação correspondente</p>
+          </div>
+          <div class="analysis-inputs">
+            <div class="input-group input-row">
+              <label for="analysis-company-select">Empresa:</label>
+              <select class="form-control" id="analysis-company-select">
+                <option value="">Selecione...</option>
+              </select>
+            </div>
+            <div class="input-group input-row">
+              <label for="analysis-window">Janela:</label>
+              <select class="form-control" id="analysis-window">
+                <option value="90">90 dias</option>
+                <option value="180">180 dias</option>
+                <option value="365">1 ano</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="run-analysis-btn">
+              <i class="fa-solid fa-play"></i> Analisar
+            </button>
+          </div>
+        </div>
+        
+        <div class="grid-2fr-1-2fr">
+          <!-- Dual Axis Chart Card -->
+          <div class="glass-card">
+            <div class="card-header-row">
+              <h3>Valor Global × Preço Histórico</h3>
+            </div>
+            <div class="chart-container-lg">
+              <canvas id="timeseries-chart"></canvas>
+            </div>
+          </div>
+          
+          <!-- Scatter Plot and Correlation Statistics -->
+          <div class="flex-col gap-2">
+            <!-- Scatter plot -->
+            <div class="glass-card">
+              <div class="card-header-row">
+                <h3>Correlação ΔV × ΔPreço</h3>
+              </div>
+              <div class="chart-container-sm">
+                <canvas id="scatter-chart"></canvas>
+              </div>
+            </div>
+            
+            <!-- Statistics Card -->
+            <div class="glass-card">
+              <div class="card-header-row">
+                <h3>Estatísticas de Associação</h3>
+              </div>
+              <div class="stats-list" id="analysis-stats-container">
+                <div class="empty-state-inline compact">
+                  <i class="fa-solid fa-chart-simple"></i>
+                  <p>Execute a análise temporal para exibir estatísticas.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 5. RECOMMENDATIONS TAB -->
+      <div class="tab-content" id="tab-recommendations">
+        <div class="glass-card">
+          <div class="legal-disclaimer">
+            <i class="fa-solid fa-triangle-exclamation" style="color:var(--color-warning); margin-right:0.5rem; flex-shrink:0;"></i>
+            <div>
+              <strong>AVISO LEGAL:</strong> As recomendações geradas por este sistema baseiam-se em modelos matemáticos e análises estatísticas retrospectivas das demonstrações financeiras e comportamento de preços. 
+              Elas <strong>NÃO constituem e não devem ser interpretadas como recomendação de compra ou venda de valores mobiliários</strong>, assessoria de investimentos ou análise profissional nos termos da Resolução CVM nº 19/2021. 
+              O investimento em ações envolve riscos de perda patrimonial. O decisor é integralmente responsável por suas decisões de alocação financeira.
+            </div>
+          </div>
+        </div>
+        
+        <div class="recommendation-grid" id="recommendations-container">
+          <div class="empty-state-full">
+            <i class="fa-solid fa-lightbulb"></i>
+            <h3>Sem Recomendações Ainda</h3>
+            <p>Calcule os valores globais e execute a análise temporal para gerar recomendações de investimento.</p>
+            <button class="btn btn-secondary btn-sm" onclick="document.querySelector('[data-tab=promethee]').click()">
+              Começar Análise <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+    </main>
+  </div>
+  
+  <!-- Drawer Overlay -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  
+  <!-- Slide Drawer for Detailed Info -->
+  <div class="drawer" id="company-detail-drawer">
+    <div class="drawer-header">
+      <h3 class="drawer-title" id="drawer-company-name">Empresa Detalhes</h3>
+      <button class="drawer-close" id="drawer-close-btn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="drawer-body" id="drawer-content">
+      <!-- Dynamic detailed metrics and mini chart -->
+    </div>
+  </div>
+
+  <!-- Chart.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- App Scripts -->
+  <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/promethee-ui.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
