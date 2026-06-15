@@ -1,7 +1,7 @@
 @echo off
-title B3 PrometheeInvestor Startup Script
+title PrometheeInvestor Startup Script
 echo ===================================================
-echo   Starting B3 PrometheeInvestor (PROMETHEE ROC)
+echo   Starting PrometheeInvestor (PROMETHEE ROC)
 echo ===================================================
 cd /d "%~dp0"
 

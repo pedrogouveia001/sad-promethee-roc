@@ -1,5 +1,5 @@
 /**
- * B3 SmarterInvestor — Alternatives Selection & Main Dashboard Panels
+ * PrometheeInvestor — Alternatives Selection & Main Dashboard Panels
  * Manages the sector tree checklist, company cards, and the decision matrix view.
  */
 

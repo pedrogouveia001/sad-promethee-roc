@@ -1,5 +1,5 @@
 /**
- * B3 PrometheeInvestor — PROMETHEE ROC Elicitation & UI Module
+ * PrometheeInvestor — PROMETHEE ROC Elicitation & UI Module
  * Handles criteria selection, drag-and-drop sorting, and ROC weight visual updates.
  */
 

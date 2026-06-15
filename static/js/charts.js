@@ -1,5 +1,5 @@
 /**
- * B3 SmarterInvestor — Chart Management Module
+ * PrometheeInvestor — Chart Management Module
  * Wraps Chart.js instances and updating logic.
  */
 

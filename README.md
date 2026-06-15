@@ -1,6 +1,6 @@
-# B3 PrometheeInvestor — Sistema de Apoio à Decisão (SAD)
+# PrometheeInvestor — Sistema de Apoio à Decisão (SAD)
 
-O **B3 PrometheeInvestor** é um Sistema de Apoio à Decisão (SAD) voltado para a análise multicritério e estatística de ativos da bolsa brasileira (B3). O sistema utiliza o método multicritério **PROMETHEE II (Brans & Vincke, 1985)** com pesos baseados no método **ROC (Rank Order Centroid)** como motor matemático e realiza correlações históricas com os preços reais das ações.
+O **PrometheeInvestor** é um Sistema de Apoio à Decisão (SAD) voltado para a análise multicritério e estatística de ativos da bolsa brasileira (B3). O sistema utiliza o método multicritério **PROMETHEE II (Brans & Vincke, 1985)** com pesos baseados no método **ROC (Rank Order Centroid)** como motor matemático e realiza correlações históricas com os preços reais das ações.
 
 ---
 

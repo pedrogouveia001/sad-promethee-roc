@@ -1,5 +1,5 @@
 """
-B3 PrometheeInvestor — Sistema de Apoio à Decisão para Investimentos na Bolsa Brasileira
+PrometheeInvestor — Sistema de Apoio à Decisão para Investimentos na Bolsa Brasileira
 Based on the PROMETHEE II multicriteria method with ROC weights
 """
 

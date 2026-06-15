@@ -1,6 +1,6 @@
 /**
- * B3 SmarterInvestor — Main Client Application Orchestrator
- * Integrates SmarterUI, Dashboard, AppCharts and performs all REST API coordination.
+ * PrometheeInvestor — Main Client Application Orchestrator
+ * Integrates PrometheeUI, Dashboard, AppCharts and performs all REST API coordination.
  */
 
 const App = {
