@@ -142,7 +142,7 @@ const AppCharts = {
             type: 'linear',
             display: true,
             position: 'left',
-            min: 0,
+            min: -1,
             max: 1,
             title: {
               display: true,

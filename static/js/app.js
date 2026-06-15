@@ -673,10 +673,12 @@ const App = {
       list.forEach(item => {
         const cell = document.createElement('div');
         cell.className = 'heatmap-cell';
-        const val = item.global_value; // range 0 to 1
+        const val = item.global_value; // range -1 to 1
         
+        // Normalize val from [-1, 1] to [0, 1] for visual colors
+        const normVal = (val + 1) / 2;
         // HSL Color gradient mapping: 0 -> deep red HSL(0, 70%, 40%), 0.5 -> dark amber HSL(35, 70%, 40%), 1.0 -> deep green HSL(120, 70%, 40%)
-        const hue = Math.round(val * 120);
+        const hue = Math.round(normVal * 120);
         cell.style.background = `hsla(${hue}, 70%, 25%, 0.45)`;
         cell.style.border = `1px solid hsla(${hue}, 70%, 35%, 0.8)`;
         

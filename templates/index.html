@@ -254,37 +254,34 @@
             </div>
           </div>
           
-          <!-- Weights Visualizer & Matrix -->
-          <div class="flex-col gap-2">
-            <!-- ROC Weights Graph Card -->
-            <div class="glass-card">
-              <div class="card-header-row">
-                <h2>Distribuição dos Pesos (ROC)</h2>
-              </div>
-              <div class="chart-container">
-                <canvas id="weights-chart"></canvas>
-              </div>
+          <!-- ROC Weights Graph Card -->
+          <div class="glass-card">
+            <div class="card-header-row">
+              <h2>Distribuição dos Pesos (ROC)</h2>
             </div>
-            
-            <!-- Performance Matrix Info -->
-            <div class="glass-card">
-              <div class="card-header-row">
-                <h2>Matriz de Decisão</h2>
-                <span class="card-chip"><i class="fa-solid fa-table-cells"></i> Normalizados [0,1]</span>
-              </div>
-              <div class="table-scroll-wrapper">
-                <table class="data-table" id="decision-matrix-table">
-                  <thead>
-                    <!-- Dynamic Headers -->
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td style="color: var(--text-secondary); padding: 1.5rem; text-align: center;">Aguardando cálculo...</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <div class="chart-container">
+              <canvas id="weights-chart"></canvas>
             </div>
+          </div>
+        </div>
+        
+        <!-- Performance Matrix Info (Full Width) -->
+        <div class="glass-card" style="margin-top: 1.75rem;">
+          <div class="card-header-row">
+            <h2>Matriz de Decisão</h2>
+            <span class="card-chip"><i class="fa-solid fa-table-cells"></i> Valores Normalizados e Fluxos Globais</span>
+          </div>
+          <div class="table-scroll-wrapper">
+            <table class="data-table" id="decision-matrix-table">
+              <thead>
+                <!-- Dynamic Headers -->
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="color: var(--text-secondary); padding: 1.5rem; text-align: center;">Aguardando cálculo...</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
