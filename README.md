@@ -43,7 +43,7 @@ O Fluxo Líquido $\Phi(a, t) \in [-1, 1]$ determina o ordenamento completo (PROM
 ## 📁 Estrutura de Pastas do Projeto
 
 ```text
-sad-promethee-roc/
+PrometheeInvestor/
 │
 ├── app.py                # Ponto de entrada (Application Factory do Flask)
 ├── config.py             # Configurações de desenvolvimento e testes
@@ -68,8 +68,8 @@ sad-promethee-roc/
 
 ### Passo 1: Configurar Ambiente Virtual
 ```bash
-git clone https://github.com/pedrogouveia001/sad-promethee-roc.git
-cd sad-promethee-roc
+git clone https://github.com/pedrogouveia001/sad-promethee-roc.git PrometheeInvestor
+cd PrometheeInvestor
 python -m venv .venv
 ```
 
