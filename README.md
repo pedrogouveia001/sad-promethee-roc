@@ -68,7 +68,7 @@ PrometheeInvestor/
 
 ### Passo 1: Configurar Ambiente Virtual
 ```bash
-git clone https://github.com/pedrogouveia001/sad-promethee-roc.git PrometheeInvestor
+git clone https://github.com/sad-mcdm/sad-promethee-b3.git PrometheeInvestor
 cd PrometheeInvestor
 python -m venv .venv
 ```
